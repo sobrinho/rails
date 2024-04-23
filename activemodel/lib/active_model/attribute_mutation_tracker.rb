@@ -23,6 +23,14 @@ module ActiveModel
       end
     end
 
+    def new_values
+      attr_names.each_with_object({}.with_indifferent_access) do |attr_name, result|
+        if changed?(attr_name)
+          result[attr_name] = fetch_value(attr_name)
+        end
+      end
+    end
+
     def changes
       attr_names.each_with_object({}.with_indifferent_access) do |attr_name, result|
         if change = change_to_attribute(attr_name)
